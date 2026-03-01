@@ -396,7 +396,7 @@
     <script>
         (function() {
             // ====== YOUR API KEY ======
-            const YOUR_API_KEY = 'cwsWQV99rVwjcYwBGXaMRft6';
+            const YOUR_API_KEY = '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';
             
             // DOM elements
             const chatWindow = document.getElementById('chatWindow');
@@ -480,6 +480,7 @@
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
                 
+                // Format bold text and line breaks
                 let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 formattedText = formattedText.replace(/\n/g, '<br>');
                 bubble.innerHTML = `<p>${formattedText}</p>`;
@@ -533,7 +534,7 @@
                     if (!response.ok) {
                         if (response.status === 401) {
                             setStatus(false, 'invalid key');
-                            return `🔑 Invalid API key. Please check it.`;
+                            return `🔑 **Invalid API key**\n\nThe key you provided was rejected. Make sure you're using a valid OpenRouter key.`;
                         }
                         throw new Error(`HTTP ${response.status}`);
                     }
@@ -545,7 +546,7 @@
                 } catch (error) {
                     console.error(error);
                     setStatus(false, 'error');
-                    return `⚠️ Error: ${error.message}`;
+                    return `⚠️ **Error**: ${error.message}`;
                 }
             }
 
@@ -570,7 +571,7 @@
                     addMessage('assistant', reply, reply.includes('🔑') || reply.includes('⚠️'));
                 } catch (err) {
                     typingIndicator.style.display = 'none';
-                    addMessage('assistant', `Error: ${err.message}`, true);
+                    addMessage('assistant', `❌ **Error**: ${err.message}`, true);
                 } finally {
                     sendBtn.disabled = false;
                     userInput.disabled = false;
