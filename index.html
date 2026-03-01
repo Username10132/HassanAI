@@ -395,10 +395,8 @@
 
     <script>
         (function() {
-            // ====== IMPORTANT: PASTE YOUR API KEY HERE BEFORE USING ======
-            // Get a free key from: https://openrouter.ai/keys
-            // Then replace the empty string below with your key
-            const YOUR_API_KEY = 'ef88ebc4-5182-43dd-97ee-38126fb61b8b';
+            // ====== YOUR API KEY ======
+            const YOUR_API_KEY = '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';
             
             // DOM elements
             const chatWindow = document.getElementById('chatWindow');
@@ -462,7 +460,7 @@
                     statusText.textContent = message || 'online';
                 } else {
                     statusDot.className = 'dot error';
-                    statusText.textContent = message || 'no key';
+                    statusText.textContent = message || 'error';
                 }
             }
 
@@ -506,12 +504,6 @@
             }
 
             async function getAIResponse(userMessage) {
-                // Check if API key is set
-                if (!YOUR_API_KEY) {
-                    setStatus(false, 'no key');
-                    return `🔑 **No API key found!**\n\n1. Go to https://openrouter.ai/keys\n2. Create a free key\n3. Paste it in the script (line ~35)`;
-                }
-
                 const messages = [
                     { role: 'system', content: 'You are Hassan, helpful and concise.' },
                     ...conversationHistory.slice(-6).map(msg => ({
@@ -541,7 +533,7 @@
                     if (!response.ok) {
                         if (response.status === 401) {
                             setStatus(false, 'invalid key');
-                            return `🔑 **Invalid API key**\n\nYour key was rejected. Make sure you've pasted it correctly in the script.`;
+                            return `🔑 Invalid API key. Please check it.`;
                         }
                         throw new Error(`HTTP ${response.status}`);
                     }
@@ -620,21 +612,8 @@
                 this.style.height = (this.scrollHeight) + 'px';
             });
 
-            // Check if key is set on load
-            if (!YOUR_API_KEY) {
-                setStatus(false, 'add key');
-                addMessage('assistant', 
-                    '🔑 **Hey! Add your API key to get started**\n\n' +
-                    '1. Go to https://openrouter.ai/keys\n' +
-                    '2. Create a free key\n' +
-                    '3. Open this HTML file in a text editor\n' +
-                    '4. Find line ~35 and paste your key between the quotes', 
-                    true
-                );
-            } else {
-                setStatus(true, 'ready');
-            }
-
+            // Initial status
+            setStatus(true, 'ready');
             updateQueueUI();
         })();
     </script>
